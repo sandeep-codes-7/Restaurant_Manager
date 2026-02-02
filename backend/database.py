@@ -1,6 +1,6 @@
-from sqlalchemy import create_engine 
-from sqlalchemy.orm import declarative_base 
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine #type: ignore
+from sqlalchemy.orm import declarative_base #type: ignore
+from sqlalchemy.orm import sessionmaker #type: ignore
 
 ITEM_DB_URL = "sqlite:///./item.db"
 ORDER_DETAILS_DB = "sqlite:///./orders.db"
