@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Boolean
 from database import Base
 from sqlalchemy.dialects.sqlite import JSON
 
@@ -14,3 +14,6 @@ class OrderList(Base):
     id = Column(Integer, primary_key=True, index=True)
     orderId = Column(Integer,unique=True,index=True)
     orderdata = Column(JSON)
+    cancle_status = Column(Boolean,default=False)
+    description = Column(String)
+    sum_total = Column(Integer, nullable=False)
