@@ -1,0 +1,25 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .nav-link {
+    @apply text-gray-700 hover:text-indigo-600 text-sm font-medium;
+  }
+
+  .mobile-link {
+    @apply block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100;
+  }
+} */
+
+@import "tailwindcss";
+
+@layer components {
+  .nav-link {
+    @apply text-gray-700 hover:text-indigo-600 text-sm font-medium;
+  }
+
+  .mobile-link {
+    @apply block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100;
+  }
+}

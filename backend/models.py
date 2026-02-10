@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String, Boolean #type: ignore
 from database import Base
-from sqlalchemy.dialects.sqlite import JSON
+from sqlalchemy.dialects.sqlite import JSON #type: ignore
 
 class ItemList(Base):
     __tablename__="items"

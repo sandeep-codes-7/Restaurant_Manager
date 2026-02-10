@@ -1,13 +1,15 @@
 from database import engine_itemdb,engine_orderdb, Base, localsession_for_items,localsession_for_orders
 from models import ItemList, OrderList
-from fastapi import FastAPI, Depends, status, HTTPException
-from sqlalchemy.orm import Session
-from pydantic import BaseModel
+from fastapi import FastAPI, Depends, status, HTTPException #type: ignore
+from sqlalchemy.orm import Session #type: ignore
+from pydantic import BaseModel #type: ignore
 import uuid
 import json
-from sqlalchemy.dialects.sqlite import JSON
-from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
+from sqlalchemy.dialects.sqlite import JSON #type: ignore
+from fastapi.responses import JSONResponse #type: ignore
+from fastapi.encoders import jsonable_encoder #type: ignore
+from fastapi.middleware.cors import CORSMiddleware #type: ignore
+
 
 def short_code():
     return int(str(uuid.uuid4().int)[:6])
@@ -31,6 +33,14 @@ def get_order_db():
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 ItemList.__table__.create(bind=engine_itemdb,checkfirst=True)
 OrderList.__table__.create(bind=engine_orderdb,checkfirst=True)
 
@@ -38,6 +48,11 @@ class OrderItem(BaseModel):
     # orderid: int
     orderdata: dict
     # desc: str
+
+class ItemData(BaseModel):
+    name: str
+    price: int
+
 
 
 @app.get("/")
@@ -117,3 +132,17 @@ async def cancleOrder(orderid: int = None, db: Session = Depends(get_order_db)):
 async def getOrder(_id: int, db: Session = Depends(get_order_db)):
     order = db.query(OrderList).filter(OrderList.orderId == _id).first()
     return order
+
+
+@app.post("/createItem")
+def createItem(db: Session = Depends(get_item_db), itemname: str = None, itemprice: int = None):
+    new_item = ItemList(itemname=itemname, price=itemprice)
+    db.add(new_item)
+    db.commit()
+    db.refresh(new_item)
+    return new_item
+
+
+@app.get("/getallitems")
+def getallitems(db: Session = Depends(get_item_db)):
+    return db.query(ItemList).all()
